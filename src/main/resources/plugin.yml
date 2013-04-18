@@ -1,0 +1,95 @@
+name: GalaxyUnstick
+main: com.akpwebdesign.GalaxyUnstick.GalaxyUnstick
+version: ${project.version}
+website: http://akpwebdesign.com
+softdepend: [VanishNoPacket]
+author: AKPWebDesign
+description: GalaxyUnstick: Unstick players who are glitching into the ground
+
+commands:
+   unstick:
+      description: This command will save the player from lagging into the floor upon connecting.
+      usage: /unstick [player]
+      permission: galaxyunstick.command.unstick
+      permission-message: You don't have permission to use this command!
+      
+   gu:
+      description: This command is used to configure GalaxyUnstick.
+      usage: /gu <mode|addworld|removeworld|listworlds|reload>
+      permission: galaxyunstick.command.gu
+      permission-message: You don't have permission to use this command!
+      
+permissions:
+  galaxyunstick.*:
+    description: Gives access to all GalaxyUnstick permissions
+    default: op
+    children:
+      galaxyunstick.command.*: true
+      galaxyunstick.notify: true
+      
+  galaxyunstick.command.*:
+    description: Gives access to all GalaxyUnstick commands
+    default: op
+    children:
+      galaxyunstick.command.unstick: true
+      galaxyunstick.command.unstick.others: true
+      galaxyunstick.command.gu.*: true
+      
+  galaxyunstick.command.unstick:
+    description: Allows you to unstick yourself
+    default: true
+    
+  galaxyunstick.command.unstick.others:
+    description: Allows you to unstick others
+    default: op
+    children:
+      galaxyunstick.command.unstick: true
+      
+  galaxyunstick.command.gu.*:
+    description: Gives access to all GalaxyUnstick configuration commands
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+      galaxyunstick.command.gu.mode: true
+      galaxyunstick.command.gu.addworld: true
+      galaxyunstick.command.gu.removeworld: true
+      galaxyunstick.command.gu.listworlds: true
+      galaxyunstick.command.gu.reload: true
+   
+  galaxyunstick.command.gu:
+    description: Needed to use any GalaxyUnstick configuration commands
+    default: op
+    
+  galaxyunstick.command.gu.mode:
+    description: Allows you to change the unstick mode
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+    
+  galaxyunstick.command.gu.addworld:
+    description: Allows you to add worlds to the configuration
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+    
+  galaxyunstick.command.gu.removeworld:
+    description: Allows you to remove worlds from the configuration
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+    
+  galaxyunstick.command.gu.listworlds:
+    description: Allows you to list the worlds in the configuration
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+    
+  galaxyunstick.command.gu.reload:
+    description: Allows you to reload the GalaxyUnstick configuration
+    default: op
+    children:
+      galaxyunstick.command.gu: true
+      
+  galaxyunstick.notify:
+    description: Players with this permission will be notified when they are unstuck
+    default: true
