@@ -5,7 +5,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <name>GalaxyUnstick</name>
     <build>
-        <finalName>${project.artifactId}-${project.version}</finalName>
+        <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
         <resources>
             <resource>
@@ -123,7 +123,7 @@
     <dependencies>
         <dependency>
             <groupId>org.bukkit</groupId>
-            <artifactId>bkkit</artifactId>
+            <artifactId>bukkit</artifactId>
             <version>LATEST</version>
             <type>jar</type>
             <scope>compile</scope>
