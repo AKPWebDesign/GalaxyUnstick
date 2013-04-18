@@ -4,7 +4,7 @@ version: ${project.version}
 website: http://akpwebdesign.com
 softdepend: [VanishNoPacket]
 author: AKPWebDesign
-description: GalaxyUnstick: Unstick players who are glitching into the ground
+description: Unstick players who are glitching into the ground
 
 commands:
    unstick:
