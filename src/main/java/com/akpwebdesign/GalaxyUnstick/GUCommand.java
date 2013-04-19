@@ -3,7 +3,9 @@ package com.akpwebdesign.GalaxyUnstick;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -194,7 +196,7 @@ public class GUCommand implements CommandExecutor
 		
 		boolean alreadyThere = false;
 		
-		//iterate through them
+		//check if world name already exists in config
 		for(Iterator<String> i = worldlist.iterator(); i.hasNext(); ) {
 			
 			//move to the next world name.
@@ -214,18 +216,42 @@ public class GUCommand implements CommandExecutor
 			sender.sendMessage(ChatColor.RED + "That world has already been added to the configuration!");
 			return true;
 			
-		//otherwise, go ahead and add it.
+		}
+		//otherwise, go on to the next step.
+
+		List<World> worlds = (List<World>) Bukkit.getWorlds();
+		
+		boolean worldOnServer = false;
+		
+		//check if world name exists on server.
+		for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+			
+			//move to the next world name.
+			String worldname = i.next().getName();
+			
+			//if worldname == the world we want to add, make sure we know.
+			if(worldname.equalsIgnoreCase(name))
+			{
+				worldOnServer = true;
+			}
+		}
+		
+		//if the world is on the server, add it.
+		if(worldOnServer)
+		{
+			worldlist.add(name);	
+					
+		//otherwise, notify the sender that the world doesn't exist and return.
 		} else {
-			
-			worldlist.add(name);
-			
+			sender.sendMessage(ChatColor.RED + "That world does not exist on the server!");
+			return true;
 		}
 		
 		plugin.getConfig().set("worldlist", worldlist);
 		
 		plugin.saveConfig();
 		
-		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + args[1] + " to the GalaxyUnstick configuration!");
+		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + args[1] + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
 		return true;
 	}
 
