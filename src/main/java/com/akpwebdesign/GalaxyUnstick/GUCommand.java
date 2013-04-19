@@ -88,7 +88,7 @@ public class GUCommand implements CommandExecutor
 		}
 		
 		plugin.reloadConfig();
-		sender.sendMessage(ChatColor.GREEN + "GalaxyUnstick Configuration Reloaded.");
+		sender.sendMessage(ChatColor.GREEN + "GalaxyUnstick configuration Reloaded.");
 		return true;
 	}
 	
@@ -96,7 +96,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.listworlds"))
 		{
-			sender.sendMessage(ChatColor.RED + "You don't have permission to list the GalaxyUnstick configuration worlds!");
+			sender.sendMessage(ChatColor.RED + "You don't have permission to list the worlds in the GalaxyUnstick configuration!");
 			return true;
 		}
 		
@@ -129,7 +129,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(args.length != 2)
 		{
-			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD>\" to remove a world from the list.");
+			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD>\" to remove a world from the GalaxyUnstick configuration.");
 			return true;
 		}
 		
@@ -160,7 +160,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(worldnames.isEmpty())
 		{
-			sender.sendMessage(ChatColor.RED + "There are no worlds left in the configuration file!");
+			sender.sendMessage(ChatColor.RED + "There are no worlds left in the GalaxyUnstick configuration!");
 			sender.sendMessage(ChatColor.RED + "Switching to " + ChatColor.GOLD + "ALLWORLDS" + ChatColor.RED + " mode.");
 			plugin.getConfig().set("mode", "ALLWORLDS");
 			plugin.saveConfig();
@@ -168,7 +168,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(noworlds)
 		{
-			sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + args[1] + ChatColor.RED + " to remove from the GalaxyUnstick Configuration!");
+			sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + args[1] + ChatColor.RED + " to remove from the GalaxyUnstick configuration!");
 		}
 		
 		
@@ -213,7 +213,7 @@ public class GUCommand implements CommandExecutor
 		if(alreadyThere)
 		{
 			
-			sender.sendMessage(ChatColor.RED + "That world has already been added to the configuration!");
+			sender.sendMessage(ChatColor.RED + "That world has already been added to the GalaxyUnstick configuration!");
 			return true;
 			
 		}
@@ -297,7 +297,7 @@ public class GUCommand implements CommandExecutor
 			if(worldnames.isEmpty())
 			{
 				sender.sendMessage(ChatColor.RED + "There are no worlds in the configuration!");
-				sender.sendMessage(ChatColor.RED + "You cannot switch to " + ChatColor.GOLD + "CONFIGLIST" + ChatColor.RED + " mode until you add a world to the list!");
+				sender.sendMessage(ChatColor.RED + "You cannot switch to " + ChatColor.GOLD + "CONFIGLIST" + ChatColor.RED + " mode until you add a world to the GalaxyUnstick configuration!");
 				sender.sendMessage(ChatColor.RED + "Use \"/gu addworld <WORLD>\" to add a world to the list.");
 				return true;
 			}
