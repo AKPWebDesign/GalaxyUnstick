@@ -76,9 +76,9 @@
     </properties>
     <dependencies>
     	<dependency>
-    		<groupId>org.bukkit</groupId>
+    		<groupId>com.akpwebdesign</groupId>
     		<artifactId>bukkit</artifactId>
-    		<version>1.5.1-R0.3-SNAPSHOT-AKPWebDesign</version>
+    		<version>1.5.1-AKPWebDesign-SNAPSHOT</version>
     	</dependency>
     	<dependency>
     		<groupId>org.kitteh</groupId>
