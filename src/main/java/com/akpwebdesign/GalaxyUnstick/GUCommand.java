@@ -90,26 +90,12 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		//set up new List for our autocompletes
 		List<String> autoComplete = new ArrayList<String>();
 		
-		//if there are no arguments, we can assume that the commands need to be output.
-		if (args[0].equals(""))
-		{
-			//add the commands to the list
-			autoComplete.add("mode");
-			autoComplete.add("addworld");
-			autoComplete.add("removeworld");
-			autoComplete.add("listworlds");
-			autoComplete.add("reload");
-			
-			//return the list
-			return autoComplete;
-		}
-		
-		if(args[0].equals("reload")|| args[0].equals("listworlds"))
+		if("reload".startsWith(args[0].toLowerCase())|| "listworlds".startsWith(args[0].toLowerCase()))
 		{
 			return autoComplete;
 		}
 		
-		if(args[0].equals("addworld"))
+		if("addworld".startsWith(args[0].toLowerCase()))
 		{
 			//grab all the worlds on the server
 			List<World> worlds = (List<World>) Bukkit.getWorlds();
@@ -124,7 +110,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		if(args[0].equals("removeworld"))
+		if("removeworld".startsWith(args[0].toLowerCase()))
 		{
 			@SuppressWarnings("unchecked")
 			List<String> worldnames = (List<String>) plugin.getConfig().getList("worldlist");
@@ -139,7 +125,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		if(args[0].equals("mode"))
+		if("mode".startsWith(args[0].toLowerCase()))
 		{
 			
 			//add the modes to the list
@@ -149,6 +135,13 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			//return the list
 			return autoComplete;
 		}
+		
+		//let's just assume that if we make it here, we don't have a command yet.
+		autoComplete.add("mode");
+		autoComplete.add("addworld");
+		autoComplete.add("removeworld");
+		autoComplete.add("listworlds");
+		autoComplete.add("reload");
 		
 		return autoComplete;
 	}
