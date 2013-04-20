@@ -10,13 +10,12 @@ import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class GUCommand implements CommandExecutor
+public class GUCommand implements CommandExecutor, TabCompleter
 {
 
 	private GalaxyUnstick plugin;
-	
-	private Commands command = Commands.NULL;
 
 	public GUCommand(GalaxyUnstick plugin)
 	{
@@ -35,43 +34,44 @@ public class GUCommand implements CommandExecutor
 				return false;
 			}
 			
+			String command = "";
 			
 			if("mode".startsWith(args[0].toLowerCase()))
 			{
-				this.command = Commands.MODE;
+				command = "mode";
 			}
 			
 			if("addworld".startsWith(args[0].toLowerCase()))
 			{
-				this.command = Commands.ADDWORLD;
+				command = "addworld";
 			}
 			
 			if("removeworld".startsWith(args[0].toLowerCase()))
 			{
-				this.command = Commands.REMOVEWORLD;
+				command = "removeworld";
 			}
 			
 			if("listworlds".startsWith(args[0].toLowerCase()))
 			{
-				this.command = Commands.LISTWORLDS;
+				command = "listworlds";
 			}
 			
 			if("reload".startsWith(args[0].toLowerCase()))
 			{
-				this.command = Commands.RELOAD;
+				command = "reload";
 			}
 			
-			switch (this.command)
+			switch (command)
 			{
-				case MODE: 
+				case "mode": 
 					return this.modeCommand(args, sender);
-				case ADDWORLD: 
+				case "addworld": 
 					return this.addWorldCommand(args, sender);
-				case REMOVEWORLD: 
+				case "removeworld": 
 					return this.removeWorldCommand(args, sender);
-				case LISTWORLDS: 
+				case "reload": 
 					return this.reloadCommand(sender);
-				case RELOAD:
+				case "listworlds":
 					return this.listWorlds(sender);
 				default:
 					return false;
@@ -81,8 +81,8 @@ public class GUCommand implements CommandExecutor
 		return false;
 	}
 	
-	//TODO: make this work.
-	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) 
 	{
 		List<World> worlds = (List<World>) Bukkit.getWorlds();
 		List<String> names = new ArrayList<String>();
@@ -191,7 +191,7 @@ public class GUCommand implements CommandExecutor
 		return true;
 	}
 
-	//TODO: make this accept multiple worlds as a list.
+	//TODO: make this accept multiple worlds as a list. Possibly make worlds autocomplete, if it can be done.
 	private boolean addWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.addworld"))
