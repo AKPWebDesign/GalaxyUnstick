@@ -85,12 +85,12 @@ public class GUCommand implements CommandExecutor, TabCompleter
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) 
 	{
 		
+		//set up new List for our autocompletes
+		List<String> autoComplete = new ArrayList<String>();
+		
 		//if there are no arguments, we can assume that the commands need to be output.
 		if (args.length <= 0)
-		{	
-			//set up new List for our commands
-			List<String> autoComplete = new ArrayList<String>();
-			
+		{
 			//add the commands to the list
 			autoComplete.add("mode");
 			autoComplete.add("addworld");
@@ -104,7 +104,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		
 		if(args[0].equals("reload")|| args[0].equals("listworlds"))
 		{
-			return null;
+			return autoComplete;
 		}
 		
 		if(args[0].equals("addworld"))
@@ -112,17 +112,14 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			//grab all the worlds on the server
 			List<World> worlds = (List<World>) Bukkit.getWorlds();
 			
-			//set up an empty list to store names in
-			List<String> names = new ArrayList<String>();
-			
 			//iterate through all the worlds on the server
 			for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
 				
 				//add the world's name to our list
-				names.add(i.next().getName());
+				autoComplete.add(i.next().getName());
 			}
 			
-			return names;
+			return autoComplete;
 		}
 		
 		if(args[0].equals("removeworld"))
@@ -130,13 +127,18 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			@SuppressWarnings("unchecked")
 			List<String> worldnames = (List<String>) plugin.getConfig().getList("worldlist");
 			
-			return worldnames;
+			//iterate through all the worlds on the server
+			for(Iterator<String> i = worldnames.iterator(); i.hasNext(); ) {
+				
+				//add the world's name to our list
+				autoComplete.add(i.next());
+			}
+			
+			return autoComplete;
 		}
 		
 		if(args[0].equals("mode"))
 		{
-			//set up new List for our modes
-			List<String> autoComplete = new ArrayList<String>();
 			
 			//add the modes to the list
 			autoComplete.add("ALLWORLDS");
@@ -146,7 +148,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		return null;
+		return autoComplete;
 	}
 
 	private boolean reloadCommand(CommandSender sender) {
