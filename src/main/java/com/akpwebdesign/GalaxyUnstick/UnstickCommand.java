@@ -12,8 +12,6 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.kitteh.vanish.staticaccess.VanishNoPacket;
-import org.kitteh.vanish.staticaccess.VanishNotLoadedException;
 
 public class UnstickCommand implements CommandExecutor
 {
@@ -178,11 +176,12 @@ public class UnstickCommand implements CommandExecutor
 		boolean canSee = true;
 		
 		if(plugin.VNPHook == true && sender.getName() != "CONSOLE"){
-			try {
-				canSee = VanishNoPacket.canSee(target, (Player) sender);
-			} catch (VanishNotLoadedException e) {
-				canSee = false;
+			
+			if(VNPHook.canSee(target, sender))
+			{
+				canSee = true;
 			}
+
 		}
 		
 		if(sender.hasPermission("galaxyunstick.notify")){
