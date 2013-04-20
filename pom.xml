@@ -2,7 +2,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.akpwebdesign</groupId>
     <artifactId>GalaxyUnstick</artifactId>
-    <version>1.0.0</version>
+<<<<<<< HEAD
+    <version>1.0.1</version>
+=======
+    <version>1.0.1</version>
+>>>>>>> 1.0.1-SNAPSHOT
     <name>GalaxyUnstick</name>
     <build>
         <finalName>${project.artifactId}</finalName>
@@ -76,9 +80,9 @@
     </properties>
     <dependencies>
     	<dependency>
-    		<groupId>org.bukkit</groupId>
+    		<groupId>com.akpwebdesign</groupId>
     		<artifactId>bukkit</artifactId>
-    		<version>1.5.1-R0.3-SNAPSHOT-AKPWebDesign</version>
+    		<version>1.5.1-AKPWebDesign-SNAPSHOT</version>
     	</dependency>
     	<dependency>
     		<groupId>org.kitteh</groupId>

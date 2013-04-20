@@ -1,14 +1,18 @@
 package com.akpwebdesign.GalaxyUnstick;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 
-public class GUCommand implements CommandExecutor
+public class GUCommand implements CommandExecutor, TabCompleter
 {
 
 	private GalaxyUnstick plugin;
@@ -76,6 +80,106 @@ public class GUCommand implements CommandExecutor
 		}
 		return false;
 	}
+	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) 
+	{
+		
+		//set up new List for our autocompletes
+		List<String> autoComplete = new ArrayList<String>();
+		
+		//if there are no arguments, we can assume that the commands need to be output.
+		if (args[0].equals(""))
+		{
+			//add the commands to the list
+			autoComplete.add("mode");
+			autoComplete.add("addworld");
+			autoComplete.add("removeworld");
+			autoComplete.add("listworlds");
+			autoComplete.add("reload");
+			
+			//return the list
+			return autoComplete;
+		}
+		
+		if(args[0].equals("reload")|| args[0].equals("listworlds"))
+		{
+			return autoComplete;
+		}
+		
+		if(args[0].equals("addworld"))
+		{
+			//grab all the worlds on the server
+			List<World> worlds = (List<World>) Bukkit.getWorlds();
+			
+			//iterate through all the worlds on the server
+			for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+				
+				//add the world's name to our list
+				autoComplete.add(i.next().getName());
+			}
+			
+			return autoComplete;
+		}
+		
+		if(args[0].equals("removeworld"))
+		{
+			@SuppressWarnings("unchecked")
+			List<String> worldnames = (List<String>) plugin.getConfig().getList("worldlist");
+			
+			//iterate through all the worlds on the server
+			for(Iterator<String> i = worldnames.iterator(); i.hasNext(); ) {
+				
+				//add the world's name to our list
+				autoComplete.add(i.next());
+			}
+			
+			return autoComplete;
+		}
+		
+		if(args[0].equals("mode"))
+		{
+			
+			//add the modes to the list
+			autoComplete.add("ALLWORLDS");
+			autoComplete.add("CONFIGLIST");
+			
+			//return the list
+			return autoComplete;
+		}
+		
+		if("mode".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("mode");
+			return autoComplete;
+		}
+		
+		if("addworld".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("addworld");
+			return autoComplete;
+		}
+		
+		if("reload".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("reload");
+			return autoComplete;
+		}
+		
+		if("removeworld".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("removeworld");
+			return autoComplete;
+		}
+		
+		if("listworlds".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("listworlds");
+			return autoComplete;
+		}
+		
+		return autoComplete;
+	}
 
 	private boolean reloadCommand(CommandSender sender) {
 		
@@ -86,7 +190,7 @@ public class GUCommand implements CommandExecutor
 		}
 		
 		plugin.reloadConfig();
-		sender.sendMessage(ChatColor.GREEN + "GalaxyUnstick Configuration Reloaded.");
+		sender.sendMessage(ChatColor.GREEN + "GalaxyUnstick configuration Reloaded.");
 		return true;
 	}
 	
@@ -94,7 +198,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.listworlds"))
 		{
-			sender.sendMessage(ChatColor.RED + "You don't have permission to list the GalaxyUnstick configuration worlds!");
+			sender.sendMessage(ChatColor.RED + "You don't have permission to list the worlds in the GalaxyUnstick configuration!");
 			return true;
 		}
 		
@@ -116,7 +220,8 @@ public class GUCommand implements CommandExecutor
 		
 		return true;
 	}
-
+	
+	//TODO: make this accept multiple worlds as a list.
 	private boolean removeWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.removeworld"))
@@ -127,7 +232,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(args.length != 2)
 		{
-			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD>\" to remove a world from the list.");
+			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD>\" to remove a world from the GalaxyUnstick configuration.");
 			return true;
 		}
 		
@@ -158,7 +263,7 @@ public class GUCommand implements CommandExecutor
 		
 		if(worldnames.isEmpty())
 		{
-			sender.sendMessage(ChatColor.RED + "There are no worlds left in the configuration file!");
+			sender.sendMessage(ChatColor.RED + "There are no worlds left in the GalaxyUnstick configuration!");
 			sender.sendMessage(ChatColor.RED + "Switching to " + ChatColor.GOLD + "ALLWORLDS" + ChatColor.RED + " mode.");
 			plugin.getConfig().set("mode", "ALLWORLDS");
 			plugin.saveConfig();
@@ -166,13 +271,14 @@ public class GUCommand implements CommandExecutor
 		
 		if(noworlds)
 		{
-			sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + args[1] + ChatColor.RED + " to remove from the GalaxyUnstick Configuration!");
+			sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + args[1] + ChatColor.RED + " to remove from the GalaxyUnstick configuration!");
 		}
 		
 		
 		return true;
 	}
 
+	//TODO: make this accept multiple worlds as a list.
 	private boolean addWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.addworld"))
@@ -194,7 +300,7 @@ public class GUCommand implements CommandExecutor
 		
 		boolean alreadyThere = false;
 		
-		//iterate through them
+		//check if world name already exists in config
 		for(Iterator<String> i = worldlist.iterator(); i.hasNext(); ) {
 			
 			//move to the next world name.
@@ -211,21 +317,45 @@ public class GUCommand implements CommandExecutor
 		if(alreadyThere)
 		{
 			
-			sender.sendMessage(ChatColor.RED + "That world has already been added to the configuration!");
+			sender.sendMessage(ChatColor.RED + "That world has already been added to the GalaxyUnstick configuration!");
 			return true;
 			
-		//otherwise, go ahead and add it.
+		}
+		//otherwise, go on to the next step.
+
+		List<World> worlds = (List<World>) Bukkit.getWorlds();
+		
+		boolean worldOnServer = false;
+		
+		//check if world name exists on server.
+		for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+			
+			//move to the next world name.
+			String worldname = i.next().getName();
+			
+			//if worldname == the world we want to add, make sure we know.
+			if(worldname.equalsIgnoreCase(name))
+			{
+				worldOnServer = true;
+			}
+		}
+		
+		//if the world is on the server, add it.
+		if(worldOnServer)
+		{
+			worldlist.add(name);	
+					
+		//otherwise, notify the sender that the world doesn't exist and return.
 		} else {
-			
-			worldlist.add(name);
-			
+			sender.sendMessage(ChatColor.RED + "The world " + ChatColor.GOLD + name + ChatColor.RED + " does not exist on the server!");
+			return true;
 		}
 		
 		plugin.getConfig().set("worldlist", worldlist);
 		
 		plugin.saveConfig();
 		
-		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + args[1] + " to the GalaxyUnstick configuration!");
+		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + name + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
 		return true;
 	}
 
@@ -271,7 +401,7 @@ public class GUCommand implements CommandExecutor
 			if(worldnames.isEmpty())
 			{
 				sender.sendMessage(ChatColor.RED + "There are no worlds in the configuration!");
-				sender.sendMessage(ChatColor.RED + "You cannot switch to " + ChatColor.GOLD + "CONFIGLIST" + ChatColor.RED + " mode until you add a world to the list!");
+				sender.sendMessage(ChatColor.RED + "You cannot switch to " + ChatColor.GOLD + "CONFIGLIST" + ChatColor.RED + " mode until you add a world to the GalaxyUnstick configuration!");
 				sender.sendMessage(ChatColor.RED + "Use \"/gu addworld <WORLD>\" to add a world to the list.");
 				return true;
 			}

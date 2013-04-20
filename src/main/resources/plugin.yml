@@ -4,11 +4,11 @@ version: ${project.version}
 website: http://akpwebdesign.com
 softdepend: [VanishNoPacket]
 author: AKPWebDesign
-description: Unstick players who are glitching into the ground
+description: Unstick players who are glitching into the ground due to lag upon connection.
 
 commands:
    unstick:
-      description: This command will save the player from lagging into the floor upon connecting.
+      description: This command will save the player from lagging into the ground upon connection.
       usage: /unstick [player]
       permission: galaxyunstick.command.unstick
       permission-message: You don't have permission to use this command!
