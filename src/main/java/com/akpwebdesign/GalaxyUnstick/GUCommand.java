@@ -1,6 +1,8 @@
 package com.akpwebdesign.GalaxyUnstick;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
@@ -89,7 +91,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		List<String> autoComplete = new ArrayList<String>();
 		
 		//if there are no arguments, we can assume that the commands need to be output.
-		if (args.length <= 0)
+		if (args[0].equals(""))
 		{
 			//add the commands to the list
 			autoComplete.add("mode");
@@ -317,7 +319,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 					
 		//otherwise, notify the sender that the world doesn't exist and return.
 		} else {
-			sender.sendMessage(ChatColor.RED + "That world does not exist on the server!");
+			sender.sendMessage(ChatColor.RED + "The world " + ChatColor.GOLD + name + ChatColor.RED + " does not exist on the server!");
 			return true;
 		}
 		
@@ -325,7 +327,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		
 		plugin.saveConfig();
 		
-		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + args[1] + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
+		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + name + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
 		return true;
 	}
 
