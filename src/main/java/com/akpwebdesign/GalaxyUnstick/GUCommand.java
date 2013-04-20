@@ -162,6 +162,12 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
+		if("reload".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("reload");
+			return autoComplete;
+		}
+		
 		if("removeworld".startsWith(args[0].toLowerCase()))
 		{
 			autoComplete.add("removeworld");
@@ -171,12 +177,6 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		if("listworlds".startsWith(args[0].toLowerCase()))
 		{
 			autoComplete.add("listworlds");
-			return autoComplete;
-		}
-		
-		if("reload".startsWith(args[0].toLowerCase()))
-		{
-			autoComplete.add("reload");
 			return autoComplete;
 		}
 		
