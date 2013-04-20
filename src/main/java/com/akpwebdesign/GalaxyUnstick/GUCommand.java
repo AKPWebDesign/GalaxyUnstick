@@ -1,5 +1,6 @@
 package com.akpwebdesign.GalaxyUnstick;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,6 +15,8 @@ public class GUCommand implements CommandExecutor
 {
 
 	private GalaxyUnstick plugin;
+	
+	private Commands command = Commands.NULL;
 
 	public GUCommand(GalaxyUnstick plugin)
 	{
@@ -32,44 +35,43 @@ public class GUCommand implements CommandExecutor
 				return false;
 			}
 			
-			String command = "";
 			
 			if("mode".startsWith(args[0].toLowerCase()))
 			{
-				command = "mode";
+				this.command = Commands.MODE;
 			}
 			
 			if("addworld".startsWith(args[0].toLowerCase()))
 			{
-				command = "addworld";
+				this.command = Commands.ADDWORLD;
 			}
 			
 			if("removeworld".startsWith(args[0].toLowerCase()))
 			{
-				command = "removeworld";
+				this.command = Commands.REMOVEWORLD;
 			}
 			
 			if("listworlds".startsWith(args[0].toLowerCase()))
 			{
-				command = "listworlds";
+				this.command = Commands.LISTWORLDS;
 			}
 			
 			if("reload".startsWith(args[0].toLowerCase()))
 			{
-				command = "reload";
+				this.command = Commands.RELOAD;
 			}
 			
-			switch (command)
+			switch (this.command)
 			{
-				case "mode": 
+				case MODE: 
 					return this.modeCommand(args, sender);
-				case "addworld": 
+				case ADDWORLD: 
 					return this.addWorldCommand(args, sender);
-				case "removeworld": 
+				case REMOVEWORLD: 
 					return this.removeWorldCommand(args, sender);
-				case "reload": 
+				case LISTWORLDS: 
 					return this.reloadCommand(sender);
-				case "listworlds":
+				case RELOAD:
 					return this.listWorlds(sender);
 				default:
 					return false;
@@ -77,6 +79,20 @@ public class GUCommand implements CommandExecutor
 			
 		}
 		return false;
+	}
+	
+	//TODO: make this work.
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String alias, String[] args)
+	{
+		List<World> worlds = (List<World>) Bukkit.getWorlds();
+		List<String> names = new ArrayList<String>();
+		
+		for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+			String worldname = i.next().getName();
+			names.add(worldname);
+		}
+		
+		return names;
 	}
 
 	private boolean reloadCommand(CommandSender sender) {
@@ -175,6 +191,7 @@ public class GUCommand implements CommandExecutor
 		return true;
 	}
 
+	//TODO: make this accept multiple worlds as a list.
 	private boolean addWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.addworld"))
