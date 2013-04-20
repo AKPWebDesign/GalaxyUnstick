@@ -90,12 +90,26 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		//set up new List for our autocompletes
 		List<String> autoComplete = new ArrayList<String>();
 		
-		if("reload".startsWith(args[0].toLowerCase())|| "listworlds".startsWith(args[0].toLowerCase()))
+		//if there are no arguments, we can assume that the commands need to be output.
+		if (args[0].equals(""))
+		{
+			//add the commands to the list
+			autoComplete.add("mode");
+			autoComplete.add("addworld");
+			autoComplete.add("removeworld");
+			autoComplete.add("listworlds");
+			autoComplete.add("reload");
+			
+			//return the list
+			return autoComplete;
+		}
+		
+		if(args[0].equals("reload")|| args[0].equals("listworlds"))
 		{
 			return autoComplete;
 		}
 		
-		if("addworld".startsWith(args[0].toLowerCase()))
+		if(args[0].equals("addworld"))
 		{
 			//grab all the worlds on the server
 			List<World> worlds = (List<World>) Bukkit.getWorlds();
@@ -110,7 +124,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		if("removeworld".startsWith(args[0].toLowerCase()))
+		if(args[0].equals("removeworld"))
 		{
 			@SuppressWarnings("unchecked")
 			List<String> worldnames = (List<String>) plugin.getConfig().getList("worldlist");
@@ -125,7 +139,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		if("mode".startsWith(args[0].toLowerCase()))
+		if(args[0].equals("mode"))
 		{
 			
 			//add the modes to the list
@@ -136,12 +150,35 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return autoComplete;
 		}
 		
-		//let's just assume that if we make it here, we don't have a command yet.
-		autoComplete.add("mode");
-		autoComplete.add("addworld");
-		autoComplete.add("removeworld");
-		autoComplete.add("listworlds");
-		autoComplete.add("reload");
+		if("mode".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("mode");
+			return autoComplete;
+		}
+		
+		if("addworld".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("addworld");
+			return autoComplete;
+		}
+		
+		if("removeworld".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("removeworld");
+			return autoComplete;
+		}
+		
+		if("listworlds".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("listworlds");
+			return autoComplete;
+		}
+		
+		if("reload".startsWith(args[0].toLowerCase()))
+		{
+			autoComplete.add("reload");
+			return autoComplete;
+		}
 		
 		return autoComplete;
 	}
