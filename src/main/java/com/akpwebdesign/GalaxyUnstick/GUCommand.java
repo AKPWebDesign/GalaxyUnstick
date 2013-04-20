@@ -84,15 +84,69 @@ public class GUCommand implements CommandExecutor, TabCompleter
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) 
 	{
-		List<World> worlds = (List<World>) Bukkit.getWorlds();
-		List<String> names = new ArrayList<String>();
 		
-		for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
-			String worldname = i.next().getName();
-			names.add(worldname);
+		//if there are no arguments, we can assume that the commands need to be output.
+		if (args.length <= 0)
+		{	
+			//set up new List for our commands
+			List<String> autoComplete = new ArrayList<String>();
+			
+			//add the commands to the list
+			autoComplete.add("mode");
+			autoComplete.add("addworld");
+			autoComplete.add("removeworld");
+			autoComplete.add("listworlds");
+			autoComplete.add("reload");
+			
+			//return the list
+			return autoComplete;
 		}
 		
-		return names;
+		if(args[0].equals("reload")|| args[0].equals("listworlds"))
+		{
+			return null;
+		}
+		
+		if(args[0].equals("addworld"))
+		{
+			//grab all the worlds on the server
+			List<World> worlds = (List<World>) Bukkit.getWorlds();
+			
+			//set up an empty list to store names in
+			List<String> names = new ArrayList<String>();
+			
+			//iterate through all the worlds on the server
+			for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+				
+				//add the world's name to our list
+				names.add(i.next().getName());
+			}
+			
+			return names;
+		}
+		
+		if(args[0].equals("removeworld"))
+		{
+			@SuppressWarnings("unchecked")
+			List<String> worldnames = (List<String>) plugin.getConfig().getList("worldlist");
+			
+			return worldnames;
+		}
+		
+		if(args[0].equals("mode"))
+		{
+			//set up new List for our modes
+			List<String> autoComplete = new ArrayList<String>();
+			
+			//add the modes to the list
+			autoComplete.add("ALLWORLDS");
+			autoComplete.add("CONFIGLIST");
+			
+			//return the list
+			return autoComplete;
+		}
+		
+		return null;
 	}
 
 	private boolean reloadCommand(CommandSender sender) {
@@ -134,7 +188,8 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		
 		return true;
 	}
-
+	
+	//TODO: make this accept multiple worlds as a list.
 	private boolean removeWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.removeworld"))
@@ -191,7 +246,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		return true;
 	}
 
-	//TODO: make this accept multiple worlds as a list. Possibly make worlds autocomplete, if it can be done.
+	//TODO: make this accept multiple worlds as a list.
 	private boolean addWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.addworld"))
