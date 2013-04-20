@@ -70,6 +70,7 @@ public class GalaxyUnstick extends JavaPlugin
 		}
 		
 		PluginDescriptionFile pdfFile = this.getDescription();
+		getLogger().info("Running on Bukkit version " + Bukkit.getBukkitVersion());
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
 	}
  
