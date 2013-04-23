@@ -317,7 +317,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 				String worldname = i.next();
 				
 				//if worldname == the world we want to add, make sure we know.
-				if(worldname.equalsIgnoreCase(name.toString()))
+				if(worldname.equalsIgnoreCase(name.next()))
 				{
 					alreadyThere = true;
 				}
@@ -345,7 +345,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 				String worldname = i.next().getName();
 				
 				//if worldname == the world we want to add, make sure we know.
-				if(worldname.equalsIgnoreCase(name.toString()))
+				if(worldname.equalsIgnoreCase(name.next()))
 				{
 					worldOnServer = true;
 				}
