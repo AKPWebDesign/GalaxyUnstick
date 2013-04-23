@@ -296,66 +296,81 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		@SuppressWarnings("unchecked")
 		List<String> worldlist = (List<String>) plugin.getConfig().getList("worldlist");
 		
-		String name = args[1];
+		List<String> names = new ArrayList<String>();
 		
-		boolean alreadyThere = false;
-		
-		//check if world name already exists in config
-		for(Iterator<String> i = worldlist.iterator(); i.hasNext(); ) {
-			
-			//move to the next world name.
-			String worldname = i.next();
-			
-			//if worldname == the world we want to add, make sure we know.
-			if(worldname.equalsIgnoreCase(name))
+		//if the argument isn't 'addworld', then we add it to our list.
+		for (String arg : args) {
+			if(!arg.equalsIgnoreCase("addworld"))
 			{
-				alreadyThere = true;
+				names.add(arg);
 			}
 		}
 		
-		//if the world is already there, don't add it. just tell the sender.
-		if(alreadyThere)
+		for(Iterator<String> name = names.iterator(); name.hasNext(); )
 		{
+			boolean alreadyThere = false;
 			
-			sender.sendMessage(ChatColor.RED + "That world has already been added to the GalaxyUnstick configuration!");
-			return true;
+			//check if world name already exists in config
+			for(Iterator<String> i = worldlist.iterator(); i.hasNext(); ) {
+				
+				//move to the next world name.
+				String worldname = i.next();
+				
+				//if worldname == the world we want to add, make sure we know.
+				if(worldname.equalsIgnoreCase(name.toString()))
+				{
+					alreadyThere = true;
+				}
+			}
 			
-		}
-		//otherwise, go on to the next step.
+			//if the world is already there, don't add it. just tell the sender.
+			if(alreadyThere)
+			{
+				
+				sender.sendMessage(ChatColor.RED + "The world " + ChatColor.GOLD + name.toString() + ChatColor.RED + " is already in the GalaxyUnstick configuration!");
+				return true;
+				
+			}
+			
+			//otherwise, go on to the next step.
 
-		List<World> worlds = (List<World>) Bukkit.getWorlds();
-		
-		boolean worldOnServer = false;
-		
-		//check if world name exists on server.
-		for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+			List<World> worlds = (List<World>) Bukkit.getWorlds();
 			
-			//move to the next world name.
-			String worldname = i.next().getName();
+			boolean worldOnServer = false;
 			
-			//if worldname == the world we want to add, make sure we know.
-			if(worldname.equalsIgnoreCase(name))
-			{
-				worldOnServer = true;
+			//check if world name exists on server.
+			for(Iterator<World> i = worlds.iterator(); i.hasNext(); ) {
+				
+				//move to the next world name.
+				String worldname = i.next().getName();
+				
+				//if worldname == the world we want to add, make sure we know.
+				if(worldname.equalsIgnoreCase(name.toString()))
+				{
+					worldOnServer = true;
+				}
 			}
+			
+			//if the world is on the server, add it.
+			if(worldOnServer)
+			{
+				worldlist.add(name.toString());				
+				sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + name + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
+				
+						
+			//otherwise, notify the sender that the world doesn't exist and return.
+			} else {
+				sender.sendMessage(ChatColor.RED + "The world " + ChatColor.GOLD + name + ChatColor.RED + " does not exist on the server!");
+			}
+			
 		}
 		
-		//if the world is on the server, add it.
-		if(worldOnServer)
-		{
-			worldlist.add(name);	
-					
-		//otherwise, notify the sender that the world doesn't exist and return.
-		} else {
-			sender.sendMessage(ChatColor.RED + "The world " + ChatColor.GOLD + name + ChatColor.RED + " does not exist on the server!");
-			return true;
-		}
-		
+		//put the updated world list into the config
 		plugin.getConfig().set("worldlist", worldlist);
 		
+		//save the running config 
 		plugin.saveConfig();
-		
-		sender.sendMessage(ChatColor.GREEN + "Successfully added " + ChatColor.GOLD + name + ChatColor.GREEN + " to the GalaxyUnstick configuration!");
+				
 		return true;
 	}
 
