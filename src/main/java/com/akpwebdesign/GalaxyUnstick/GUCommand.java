@@ -287,9 +287,9 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return true;
 		}
 		
-		if(args.length != 2)
+		if(args.length < 2)
 		{
-			sender.sendMessage(ChatColor.RED + "Use \"/gu addworld <WORLD>\" to add a world to the list.");
+			sender.sendMessage(ChatColor.RED + "Use \"/gu addworld <WORLD> [WORLD2, WORLD3, ...]\" to add a world to the list.");
 			return true;
 		}
 		
