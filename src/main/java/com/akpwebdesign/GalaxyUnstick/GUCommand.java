@@ -230,9 +230,9 @@ public class GUCommand implements CommandExecutor, TabCompleter
 			return true;
 		}
 		
-		if(args.length != 2)
+		if(args.length > 2)
 		{
-			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD>\" to remove a world from the GalaxyUnstick configuration.");
+			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD> [WORLD2, WORLD#, ...]\" to remove a world from the GalaxyUnstick configuration.");
 			return true;
 		}
 		
@@ -243,39 +243,48 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		//set up a variable to check whether or not we removed a world at the end.
 		boolean noworlds = true;
 		
-		String name = args[1];
-		
-		//iterate through them
-		for(Iterator<String> i = worldnames.iterator(); i.hasNext(); ) {
-			
-			//move to the next world name.
-			String worldname = i.next();
-			
-			//if worldname == the world we want to remove, remove it.
-			if(worldname.equalsIgnoreCase(name))
+		//for all arguments
+		for (String arg : args) {
+			//if argument isn't removeworld, it must be a world.
+			if(!arg.equalsIgnoreCase("removeworld"))
 			{
-				i.remove();
-				sender.sendMessage(ChatColor.GOLD + worldname + ChatColor.GREEN + " successfully removed from the GalaxyUnstick configuration!");
-				noworlds = false;
-				plugin.saveConfig();
+				//make sure noworlds is true upon starting the loop
+				noworlds = true;
+				
+				//iterate through them
+				for(Iterator<String> i = worldnames.iterator(); i.hasNext(); ) {
+					
+					//move to the next world name.
+					String worldname = i.next();
+					
+					//if worldname == the world we want to remove, remove it.
+					if(worldname.equalsIgnoreCase(arg))
+					{
+						i.remove();
+						sender.sendMessage(ChatColor.GOLD + worldname + ChatColor.GREEN + " successfully removed from the GalaxyUnstick configuration!");
+						noworlds = false;
+						plugin.saveConfig();
+					}
+				}
+				
+				if(worldnames.isEmpty())
+				{
+					sender.sendMessage(ChatColor.RED + "There are no worlds left in the GalaxyUnstick configuration!");
+					sender.sendMessage(ChatColor.RED + "Switching to " + ChatColor.GOLD + "ALLWORLDS" + ChatColor.RED + " mode.");
+					plugin.getConfig().set("mode", "ALLWORLDS");
+					plugin.saveConfig();
+				}
+				
+				if(noworlds)
+				{
+					sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + arg + ChatColor.RED + " to remove from the GalaxyUnstick configuration!");
+				}
+				
 			}
 		}
 		
-		if(worldnames.isEmpty())
-		{
-			sender.sendMessage(ChatColor.RED + "There are no worlds left in the GalaxyUnstick configuration!");
-			sender.sendMessage(ChatColor.RED + "Switching to " + ChatColor.GOLD + "ALLWORLDS" + ChatColor.RED + " mode.");
-			plugin.getConfig().set("mode", "ALLWORLDS");
-			plugin.saveConfig();
-		}
-		
-		if(noworlds)
-		{
-			sender.sendMessage(ChatColor.RED + "There was no world by the name of " + ChatColor.GOLD + args[1] + ChatColor.RED + " to remove from the GalaxyUnstick configuration!");
-		}
-		
-		
 		return true;
+		
 	}
 
 	//TODO: make this accept multiple worlds as a list.
