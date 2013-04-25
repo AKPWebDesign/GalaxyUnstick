@@ -221,7 +221,6 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		return true;
 	}
 	
-	//TODO: make this accept multiple worlds as a list.
 	private boolean removeWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.removeworld"))
@@ -232,7 +231,7 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		
 		if(args.length > 2)
 		{
-			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD> [WORLD2, WORLD#, ...]\" to remove a world from the GalaxyUnstick configuration.");
+			sender.sendMessage(ChatColor.RED + "Use \"/gu removeworld <WORLD> [WORLD2, WORLD3, ...]\" to remove a world from the GalaxyUnstick configuration.");
 			return true;
 		}
 		
@@ -287,7 +286,6 @@ public class GUCommand implements CommandExecutor, TabCompleter
 		
 	}
 
-	//TODO: make this accept multiple worlds as a list.
 	private boolean addWorldCommand(String[] args, CommandSender sender) {
 		
 		if(!sender.hasPermission("galaxyunstick.command.gu.addworld"))
