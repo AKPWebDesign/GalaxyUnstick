@@ -4,6 +4,12 @@
     <artifactId>GalaxyUnstick</artifactId>
     <version>1.0.3</version>
     <name>GalaxyUnstick</name>
+    <distributionManagement>
+        <repository>
+            <id>ssh-repository</id>
+            <url>scpexe://root@server1.akpwebdesign.com/var/www/GalaxyUnstick</url>
+        </repository>
+    </distributionManagement>
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
@@ -17,6 +23,14 @@
                 </includes>
             </resource>
         </resources>
+        <extensions>
+          <!-- Enabling the use of FTP -->
+          <extension>
+            <groupId>org.apache.maven.wagon</groupId>
+             <artifactId>wagon-ssh-external</artifactId>
+             <version>1.0-beta-6</version>
+          </extension>
+        </extensions>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
