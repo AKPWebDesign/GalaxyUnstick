@@ -55,14 +55,6 @@
     </build>
     <repositories>
         <repository>
-            <id>spout-repo</id>
-            <url>http://nexus.spout.org/content/groups/public/</url>
-        </repository>
-        <repository>
-            <id>essentials-repo</id>
-            <url>http://ess.ementalo.com/nexus/content/groups/public/</url>
-        </repository>
-        <repository>
             <id>kitteh-repo</id>
             <url>http://repo.kitteh.org/content/groups/public</url>
         </repository>
@@ -76,14 +68,14 @@
     </properties>
     <dependencies>
     	<dependency>
-    		<groupId>com.akpwebdesign</groupId>
+    		<groupId>org.bukkit</groupId>
     		<artifactId>bukkit</artifactId>
-    		<version>1.5.2-AKPWebDesign-SNAPSHOT</version>
+    		<version>1.7.9-R0.2</version>
     	</dependency>
     	<dependency>
     		<groupId>org.kitteh</groupId>
     		<artifactId>VanishNoPacket</artifactId>
-    		<version>3.15</version>
+    		<version>3.19.1</version>
     		    <exclusions>
                     <exclusion>
                         <groupId>com.comphenix.protocol</groupId>
