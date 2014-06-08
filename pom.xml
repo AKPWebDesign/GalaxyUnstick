@@ -7,7 +7,7 @@
     <distributionManagement>
         <repository>
             <id>ssh-repository</id>
-            <url>scpexe://root@server1.akpwebdesign.com/var/www/GalaxyUnstick</url>
+            <url>sftp://root@server1.akpwebdesign.com/var/www/GalaxyUnstick</url>
         </repository>
     </distributionManagement>
     <build>
