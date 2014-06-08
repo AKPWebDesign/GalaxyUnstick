@@ -4,6 +4,13 @@
     <artifactId>GalaxyUnstick</artifactId>
     <version>1.0.3</version>
     <name>GalaxyUnstick</name>
+    <distributionManagement>
+        <repository>
+            <id>server1</id>
+            <name>server1-releases</name>
+            <url>http://server1.akpwebdesign.com:8082/artifactory/plugins-release-local</url>
+        </repository>
+    </distributionManagement>
     <build>
         <finalName>${project.artifactId}</finalName>
         <sourceDirectory>${basedir}/src/main/java</sourceDirectory>
