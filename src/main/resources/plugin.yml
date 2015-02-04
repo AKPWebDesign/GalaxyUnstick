@@ -26,6 +26,7 @@ permissions:
     children:
       galaxyunstick.command.*: true
       galaxyunstick.notify: true
+      galaxyunstick.admin: true
       
   galaxyunstick.command.*:
     description: Gives access to all GalaxyUnstick commands
@@ -92,4 +93,8 @@ permissions:
       
   galaxyunstick.notify:
     description: Players with this permission will be notified when they are unstuck
+    default: true
+    
+  galaxyunstick.admin:
+    description: Players with this permission will be notified when other players are unstick
     default: true

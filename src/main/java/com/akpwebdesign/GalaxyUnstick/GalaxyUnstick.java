@@ -4,21 +4,32 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.World;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-public class GalaxyUnstick extends JavaPlugin
+public class GalaxyUnstick extends JavaPlugin implements Listener
 {
 	protected boolean VNPHook = false;
+	
+	protected List<UUID> admins = new ArrayList<UUID>();
 	
 	public void onEnable()
 	{		
 		//register our commands
 		getCommand("unstick").setExecutor(new UnstickCommand(this));
 		getCommand("gu").setExecutor(new GUCommand(this));
+		
+		//register our event listeners
+		getServer().getPluginManager().registerEvents(this, this);
 		
 		boolean firstrun = false;
 		
@@ -79,4 +90,24 @@ public class GalaxyUnstick extends JavaPlugin
 		getLogger().info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!");
 	}
 	
+	@EventHandler
+	public void onPlayerLogin(PlayerJoinEvent event)
+	{
+		Player plr = event.getPlayer();
+		
+		if(plr.hasPermission("galaxyunstick.admin")) {
+			this.admins.add(plr.getUniqueId());
+		}
+	}
+	
+	@EventHandler
+	public void onPlayerLogoff(PlayerQuitEvent event)
+	{
+		this.admins.remove(event.getPlayer().getUniqueId());
+	}
+	
+	public List<UUID> getAdmins() 
+	{
+		return this.admins;
+	}
 }

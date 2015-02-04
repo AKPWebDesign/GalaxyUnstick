@@ -3,6 +3,8 @@ package com.akpwebdesign.GalaxyUnstick;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
+import java.util.logging.Logger;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -27,7 +29,7 @@ public class UnstickCommand implements CommandExecutor
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
 	{
 		if(cmd.getName().equalsIgnoreCase("unstick"))
-		{
+		{			
 			//if there are no arguments (or less than no arguments, just in case. lolwut?)...
 			if (args.length <= 0)
 			{	
@@ -68,6 +70,7 @@ public class UnstickCommand implements CommandExecutor
 			
 			//if we get here, we must have exactly one argument.
 			//now we'll check to see if the target player is logged in.
+			@SuppressWarnings("deprecation")
 			Player target = (Bukkit.getServer().getPlayer(args[0]));
 			if (target == null) {
 				sender.sendMessage(ChatColor.GREEN + args[0] + ChatColor.RED + " is not online!");
@@ -166,8 +169,18 @@ public class UnstickCommand implements CommandExecutor
 	}
 	
 	private boolean notifyUnstick(Player target, CommandSender sender) {
-		if(sender.getName() == target.getName()){
+		if(sender.equals(target)){
 			sender.sendMessage(ChatColor.AQUA + "You have unstuck yourself!");
+			
+			for(UUID uuid : plugin.getAdmins()) {
+				Player plr = Bukkit.getPlayer(uuid);
+				
+				if(plr.isOnline() && !plr.equals(target))
+				{
+					plr.sendMessage(ChatColor.GREEN + target.getName() + ChatColor.AQUA + " has unstuck themselves!");
+				}
+			}
+			
 			return true;
 		}
 		
@@ -186,12 +199,21 @@ public class UnstickCommand implements CommandExecutor
 		
 		if(sender.hasPermission("galaxyunstick.notify")){
 			if(sender.getName() == "CONSOLE" || canSee == false){
-				target.sendMessage(ChatColor.AQUA + "You have been unstuck by: " + ChatColor.LIGHT_PURPLE + "[Server]");
+				target.sendMessage(ChatColor.AQUA + "You have been unstuck by: " + ChatColor.LIGHT_PURPLE + "[Server]" + ChatColor.AQUA + "!");
 			}else{
-				target.sendMessage(ChatColor.AQUA + "You have been unstuck by: " + ChatColor.GREEN + sender.getName());
+				target.sendMessage(ChatColor.AQUA + "You have been unstuck by: " + ChatColor.GREEN + sender.getName() + ChatColor.AQUA + "!");
 			}
 		}
 		
+		for(UUID uuid : plugin.getAdmins()) {
+			Player plr = Bukkit.getPlayer(uuid);
+			
+			if(plr.isOnline() && !plr.equals(target) && !plr.equals(sender))
+			{
+				plr.sendMessage(ChatColor.GREEN + target.getName() + ChatColor.AQUA + " has been unstuck by " + ChatColor.LIGHT_PURPLE + sender.getName() + ChatColor.AQUA + "!");
+			}
+		}
+				
 		return true;
 	}
 
